@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Button, FormGroup, Input, InputGroup, InputGroupText, Container, Row, Col } from 'reactstrap';
+import { Button, FormGroup, FormFeedback, Input, InputGroup, InputGroupText, Container, Row, Col } from 'reactstrap';
 
 import { socket } from '../utils/socket'
 
@@ -10,6 +10,7 @@ export const GameSetup = ({ orgName } : {orgName: string} ) => {
   
     const [gameCode, setGameCode] = useState('')
     const [workgroupId, setWorkgroupId] = useState('')
+    const [invalidId, setInvalidId] = useState('')
 
     const updateCodeValue = (value: string) => {
         let upper: string = value.toUpperCase()
@@ -35,10 +36,9 @@ export const GameSetup = ({ orgName } : {orgName: string} ) => {
         socket.emit('workgroup:join', gameCode)
     }
 
-    socket.on('workgroup:id', (id) => {
-        console.log('created workgroup with id', id)
-        setWorkgroupId(id)
-    })
+    socket.on('workgroup:id', setWorkgroupId)
+
+    socket.on('workgroup:invalid_id', setInvalidId)
 
     return (
       <>
@@ -47,55 +47,61 @@ export const GameSetup = ({ orgName } : {orgName: string} ) => {
             Hello {orgName}. Now that you've registered an organization it's time to create or join a workgroup. (EXPAND EXPLANATION) 
         </p>
 
-        { workgroupId !== '' ? 
-            <h1>{workgroupId}</h1>
-        :  
-            <Container>
-                <Row className='button-row'>
-                    <Col>
-                        <Button 
-                            color='primary'
-                            onClick={  createWorkgroup }
-                            size='lg'
-                        >
-                            Create Workgroup
-                        </Button>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <h3 className='or'>OR</h3>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col sm='7'>
-                        <FormGroup floating>
-                            <InputGroup size='lg'>
-                                <InputGroupText>#</InputGroupText>
-                                <Input
-                                    id='gameCode'
-                                    name='gameCode'
-                                    placeholder='0000'
-                                    type='text'
-                                    value={gameCode}
-                                    onChange={e => updateCodeValue(e.target.value)}
-                                    
-                                />
-                                <Button 
-                                    color='primary'
-                                    outline
-                                    onClick={  joinWorkgroup } 
-                                    disabled={gameCode.length !== 4}
-                                >
-                                    Join Workgroup
-                                </Button>
-                            </InputGroup>
-                        </FormGroup>
-                    </Col>
-                </Row>
+        <Container>
+            <Row className='button-row'>
+                <Col>
+                { workgroupId === '' ? 
+                    <Button 
+                        color='primary'
+                        onClick={  createWorkgroup }
+                        size='lg'
+                    >
+                        Create Workgroup
+                    </Button>
+                :  
+                    <>
+                    Share your Workgroup ID with another player:
+                    <h1 className='workgroup-id'>#{workgroupId}</h1>
+                    </>
+                }
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <h3 className='or'>OR</h3>
+                </Col>
+            </Row>
+            <Row>
+                <Col sm='7'>
+                    <FormGroup floating>
+                        <InputGroup size='lg'>
+                            <InputGroupText>#</InputGroupText>
+                            <Input
+                                id='gameCode'
+                                name='gameCode'
+                                placeholder='0000'
+                                type='text'
+                                value={gameCode}
+                                onChange={e => updateCodeValue(e.target.value)}
+                                invalid={invalidId !== ''}
+                            />
+                            <Button 
+                                color='primary'
+                                outline
+                                onClick={  joinWorkgroup } 
+                                disabled={gameCode.length !== 4}
+                            >
+                                Join Workgroup
+                            </Button>
+                            <FormFeedback>
+                                Workgroup ID #{invalidId} is not valid.
+                            </FormFeedback>
+                        </InputGroup>
+                    </FormGroup>
+                </Col>
+            </Row>
 
-            </Container>
-        }
+        </Container>
       </>
     );
 };

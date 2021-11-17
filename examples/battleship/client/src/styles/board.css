@@ -1,0 +1,34 @@
+.board {
+    width: 450px;
+    height: 450px;
+    border: 1px solid grey;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.board.opponent {
+    cursor: pointer;
+}
+
+.board div {
+    width: 20%;
+    height: 20%;
+    background-color: #eee;
+    border: 1px solid black;
+}
+
+.board.opponent .empty:hover {
+    background-color: #ccc;
+}
+
+.board .ship {
+    background-color: #444;
+}
+
+.board .hit {
+    background-color: red;
+}
+
+.board .miss {
+    background-color: #444;
+}

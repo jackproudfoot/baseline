@@ -4,13 +4,9 @@ import { Row, Col } from 'reactstrap'
 import { OrgCreation } from './OrgCreation';
 import { GameSetup } from './GameSetup';
 
-import { socket } from '../utils/socket'
-
 import '../styles/setup.css'
 
-interface IProps {
-  startGame: any
-}
+interface IProps {}
 
 interface IState {
   setupState: string,
@@ -18,7 +14,7 @@ interface IState {
 }
 
 export class Setup extends React.Component<IProps, IState> {
-  constructor(props: any) {
+  constructor(props: IProps) {
     super(props)
     this.state = { setupState: 'orgCreation', orgName: '' }
     // this.state = { setupState: 'workgroupSetup', orgName: 'test org' } --- skips to workgroup setup
@@ -26,13 +22,6 @@ export class Setup extends React.Component<IProps, IState> {
     this.createOrg = this.createOrg.bind(this)
   }
 
-  componentDidMount = () => {
-    socket.on('game:init', (id) => {
-      console.log('Initializing game with id ', id)
-
-      this.props.startGame()
-    })
-  }
 
   createOrg = (orgName: string) => {
     console.log('Register organization: ', orgName)
