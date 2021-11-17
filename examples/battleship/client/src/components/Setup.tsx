@@ -1,27 +1,57 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Row, Col } from 'reactstrap'
 import { OrgCreation } from './OrgCreation';
 import { GameSetup } from './GameSetup';
 
+import { socket } from '../utils/socket'
+
 import '../styles/setup.css'
 
-export const Setup = ({ startGame } : {startGame : any} ) => {
-  const [setupState, setSetupState] = useState('orgCreation')
+interface IProps {
+  startGame: any
+}
 
-  const createOrg = (orgName: string) => {
-    console.log('Register organization: ', orgName)
+interface IState {
+  setupState: string,
+  orgName: string
+}
 
-    setSetupState('gameSetup')
+export class Setup extends React.Component<IProps, IState> {
+  constructor(props: any) {
+    super(props)
+    this.state = { setupState: 'orgCreation', orgName: '' }
+    // this.state = { setupState: 'workgroupSetup', orgName: 'test org' } --- skips to workgroup setup
+
+    this.createOrg = this.createOrg.bind(this)
   }
 
-  return (
-    <main>
+  componentDidMount = () => {
+    socket.on('game:init', (id) => {
+      console.log('Initializing game with id ', id)
+
+      this.props.startGame()
+    })
+  }
+
+  createOrg = (orgName: string) => {
+    console.log('Register organization: ', orgName)
+
+    this.setState({ setupState: 'workgroupSetup', orgName: orgName})
+  }
+
+  render() {
+    return <main>
         <Row className="centerCard">
             <Col sm="12" md={{offset: 3, size: 6}}>
-                { setupState === 'orgCreation' ? <OrgCreation createOrg={createOrg} /> : <GameSetup startGame={ startGame } /> }
+                { 
+                  this.state.setupState === 'orgCreation' ? 
+                    <OrgCreation createOrg={this.createOrg} /> 
+                  : 
+                    <GameSetup orgName={ this.state.orgName } /> 
+                }
             </Col>
         </Row>
     </main>
-  );
+  }
 };
