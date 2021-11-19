@@ -6,24 +6,18 @@ import { GameSetup } from './GameSetup';
 
 import '../styles/setup.css'
 
-interface IProps {}
-
-interface IState {
-  setupState: string,
-  orgName: string
-}
-
-export class Setup extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
+export class Setup extends React.Component {
+  constructor(props) {
     super(props)
     this.state = { setupState: 'orgCreation', orgName: '' }
     // this.state = { setupState: 'workgroupSetup', orgName: 'test org' } --- skips to workgroup setup
+    // this.state = { setupState: 'workgroupSetup', orgName: 'test org' }
 
     this.createOrg = this.createOrg.bind(this)
   }
 
 
-  createOrg = (orgName: string) => {
+  createOrg = (orgName) => {
     console.log('Register organization: ', orgName)
 
     this.setState({ setupState: 'workgroupSetup', orgName: orgName})

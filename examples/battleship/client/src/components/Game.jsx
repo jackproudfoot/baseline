@@ -2,19 +2,8 @@ import React from 'react';
 
 import { Board } from './Board';
 
-interface IProps {
-    id: string
-}
-
-interface IState {
-    shipPlaced: boolean,
-    opponentShipPlaced: boolean,
-    playerState: Array<string>,
-    opponentState: Array<string>
-}
-
-export class Game extends React.Component<IProps, IState> {
-    constructor(props: IProps) {
+export class Game extends React.Component {
+    constructor(props) {
         super(props);
         this.state = {
             shipPlaced: false,

@@ -5,16 +5,16 @@ import '../styles/board.css'
 const SHIP_LENGTH = 3;
 const BOARD_WIDTH = 5;
 
-export const Board = ({squares, player = false} : {squares: Array<string>, player?: boolean}) => {
+export const Board = ({squares, player=false}) => {
     const [hoverIndex, setHoverIndex] = useState(0)
     const [orientation, setOrientation] = useState(false)
     
-    const updateHoverIndex = (index: number) => {
+    const updateHoverIndex = (index) => {
         if (!orientation && index % BOARD_WIDTH < SHIP_LENGTH) setHoverIndex(index) 
         else if (orientation && index < BOARD_WIDTH * SHIP_LENGTH) setHoverIndex(index)
     }
 
-    const indexInRange = (index: number) => {
+    const indexInRange = (index) => {
         if (!orientation) {
             return hoverIndex <= index && index < hoverIndex + SHIP_LENGTH
         }

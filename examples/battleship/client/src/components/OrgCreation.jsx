@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Button, FormGroup, Input, FormFeedback, Label } from 'reactstrap'
 
-export const OrgCreation = ({ createOrg } : {createOrg : any} ) => {
+export const OrgCreation = ({createOrg}) => {
   
   const [orgName, setOrgName] = useState('')
 

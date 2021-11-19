@@ -6,14 +6,14 @@ import { socket } from '../utils/socket'
 
 import '../styles/gameSetup.css'
 
-export const GameSetup = ({ orgName } : {orgName: string} ) => {
+export const GameSetup = ({orgName}) => {
   
     const [gameCode, setGameCode] = useState('')
     const [workgroupId, setWorkgroupId] = useState('')
     const [invalidId, setInvalidId] = useState('')
 
-    const updateCodeValue = (value: string) => {
-        let upper: string = value.toUpperCase()
+    const updateCodeValue = (value) => {
+        let upper = value.toUpperCase()
 
         if (upper.length > gameCode.length) {
 
