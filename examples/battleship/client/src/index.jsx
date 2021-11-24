@@ -10,9 +10,9 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './styles/index.css';
 
 export const App = () => {
-  const [appState, setAppState] = useState('setup')
+  // const [appState, setAppState] = useState('setup')
   // const [appState, setAppState] = useState('TEST') -- skips right to game
-  // const [appState, setAppState] = useState('TEST')
+  const [appState, setAppState] = useState('TEST')
 
 
   socket.once('game:init', (id) => {

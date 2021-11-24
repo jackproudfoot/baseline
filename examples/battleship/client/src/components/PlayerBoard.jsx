@@ -1,11 +1,10 @@
 import { useState } from 'react'
 
+import { BOARD_WIDTH, SHIP_LENGTH, SHIP, COORDS, coordFromIndex } from './Game'
+
 import '../styles/board.css'
 
-const SHIP_LENGTH = 3;
-const BOARD_WIDTH = 5;
-
-export const Board = ({squares, player=false}) => {
+export const PlayerBoard = ({squares, shipPlaced, placeShip}) => {
     const [hoverIndex, setHoverIndex] = useState(0)
     const [orientation, setOrientation] = useState(false)
     
@@ -28,20 +27,23 @@ export const Board = ({squares, player=false}) => {
     let boardSquares = squares.map((type, index) => {
         return (
             <div 
-                className={player && indexInRange(index) ? 'ship' : type} 
+                className={!shipPlaced && indexInRange(index) ? SHIP : type} 
                 key={index}
                 onMouseEnter={() => updateHoverIndex(index)}
-            ></div>
+            >
+                {coordFromIndex(index)}
+            </div>
         )
     })
     
     return (
         <div 
-            className={player ? 'board player' : 'board opponent'}
+            className={'board player'}
             onContextMenu={(e) => {
                 e.preventDefault()
                 setOrientation(!orientation)
             }}
+            onClick={() => placeShip(hoverIndex, orientation)}
         >
             {boardSquares}
         </div>
