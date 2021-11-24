@@ -7,9 +7,8 @@ import { GameSetup } from './GameSetup';
 export class Setup extends React.Component {
   constructor(props) {
     super(props)
-    // this.state = { setupState: 'orgCreation', orgName: '' }
+    this.state = { setupState: 'orgCreation', orgName: '' }
     // this.state = { setupState: 'workgroupSetup', orgName: 'test org' } --- skips to workgroup setup
-    this.state = { setupState: 'workgroupSetup', orgName: 'test org' }
 
     this.createOrg = this.createOrg.bind(this)
   }
